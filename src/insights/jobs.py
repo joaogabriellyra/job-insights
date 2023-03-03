@@ -1,9 +1,16 @@
 from functools import lru_cache
 from typing import List, Dict
+import csv
 
 
 @lru_cache
 def read(path: str) -> List[Dict]:
+    with open(path, 'r') as file:
+        output = []
+        content = csv.DictReader(file, delimiter=",", quotechar='"')
+        for job in content:
+            output.append(job)
+        return output
     """Reads a file from a given path and returns its contents
 
     Parameters
@@ -20,6 +27,13 @@ def read(path: str) -> List[Dict]:
 
 
 def get_unique_job_types(path: str) -> List[str]:
+    content = read(path)
+    uniques_job_types = []
+    for row in content:
+        type = row["job_type"]
+        if type not in uniques_job_types:
+            uniques_job_types.append(type)
+    return uniques_job_types
     """Checks all different job types and returns a list of them
 
     Must call `read`

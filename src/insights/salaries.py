@@ -1,7 +1,23 @@
 from typing import Union, List, Dict
+import csv
+
+
+def read(path: str) -> List[Dict]:
+    with open(path, 'r') as file:
+        output = []
+        content = csv.DictReader(file, delimiter=",", quotechar='"')
+        for job in content:
+            output.append(job)
+        return output
 
 
 def get_max_salary(path: str) -> int:
+    content = read(path)
+    output = []
+    for thing in content:
+        if thing["max_salary"].isdigit():
+            output.append(int(thing["max_salary"]))
+    return max(output)
     """Get the maximum salary of all jobs
 
     Must call `read`
@@ -20,6 +36,12 @@ def get_max_salary(path: str) -> int:
 
 
 def get_min_salary(path: str) -> int:
+    content = read(path)
+    output = []
+    for thing in content:
+        if thing["min_salary"].isdigit():
+            output.append(int(thing["min_salary"]))
+    return min(output)
     """Get the minimum salary of all jobs
 
     Must call `read`

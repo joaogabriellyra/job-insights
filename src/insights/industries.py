@@ -1,7 +1,24 @@
 from typing import List, Dict
+import csv
+
+
+def read(path: str) -> List[Dict]:
+    with open(path, 'r') as file:
+        output = []
+        content = csv.DictReader(file, delimiter=",", quotechar='"')
+        for job in content:
+            output.append(job)
+        return output
 
 
 def get_unique_industries(path: str) -> List[str]:
+    content = read(path)
+    uniques_industries = []
+    for row in content:
+        industries = row["industry"]
+        if industries not in uniques_industries and len(industries) > 0:
+            uniques_industries.append(industries)
+    return uniques_industries
     """Checks all different industries and returns a list of them
 
     Must call `read`
